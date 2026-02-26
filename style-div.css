@@ -155,7 +155,6 @@ li.sidebar a{
     color: rgb(46, 46, 46);
 }
 .button-add{
-    background-color:rgb(16, 125, 235);
     border: none;
     border-radius: 5px;
     color: rgb(255, 255, 255);
@@ -239,6 +238,11 @@ tr:first-child {
   background-color: rgb(221, 221, 221);
 }
 
+table button{
+    height: 25px;
+    cursor: pointer;
+}
+
 table button.editar{
     border-radius: 5px;
     border: none;
@@ -249,6 +253,12 @@ table button.editar{
 table button.editar:hover{
     background-color: rgb(219, 175, 0);
     color: black;
+}
+
+table button.editar:active{
+    background-color: rgb(243, 194, 0);
+    color: black;
+    scale: 0.95;
 }
 
 table button.eliminar{
@@ -263,6 +273,12 @@ table button.eliminar:hover{
     color: rgb(255, 255, 255);
 }
 
+table button.eliminar:active{
+    scale: 0.95;
+    background-color: rgb(232, 3, 3);
+    color: rgb(255, 255, 255);
+}
+
 table button.ver{
     border-radius: 5px;
     border: none;
@@ -274,3 +290,41 @@ table button.ver:hover{
     background-color: rgb(0, 140, 0);
     color: rgb(255, 255, 255);
 }
+
+
+table button.ver:active{
+    scale: 0.95;
+    background-color: rgb(2, 194, 2);
+    color: rgb(255, 255, 255);
+}
+
+.acciones{
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+.actions button.agregar{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(16, 125, 235);
+    border: none;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.actions button.agregar:hover{
+    background-color: rgb(14, 110, 218);
+    color: rgb(255, 255, 255);
+}
+.actions button.agregar:active{
+    scale: 0.98;
+    background-color: rgb(18, 132, 237);
+    color: rgb(255, 255, 255);
+}
+
+//hasta aqui estan los antiguos 
