@@ -329,5 +329,9 @@ table button.ver:active{
     color: rgb(255, 255, 255);
 }
 
-//hasta aqui estan los antiguos 
+table th.acciones{
+    border: none;
+    width: 100%;
+}
 
+//hasta aqui estan los antiguos
