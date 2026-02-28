@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Gestor de Productos</title> 
+        <link rel="stylesheet" href="css/style-div.css">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    </head>
+
+    <body>
+        <div class="container-main">
+            <div class="topbar">
+                <div class="sidebarMo">
+                    <button class="sidebarBt"><b>𝄘</b></button>
+                </div>
+                <div class="logo">
+                    <a href="index.html">Comercializadora ACME S.A.S.</a>
+                </div>
+                <div class="button-session">
+                    <a href="index.html" class="cerrar">Cerrar Sesión</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="sidebar">
+                    <ul>
+                        <li><a href="index.html">Panel de Control</a></li>
+                        <li><a href="gestor-de-productos.html">Gestor de Productos</a></li>
+                        <li><a href="gestor-de-clientes.html">Gestor de Clientes</a></li>
+                        <li><a href="gestor-de-proveedores.html">Gestor de Proveedores</a></li>
+                        <li><a href="gestor-de-categorias.html">Gestor de Categorias</a></li>
+                        <li><a href="gestor-de-ordenes.html" class="selected">Ordenes de Trabajo</a></li>
+                        <li><a href="gestor-de-cotizaciones.html">Cotizaciones</a></li>
+                        <li><a href="gestor-de-reportes.html">Reportes</a></li>
+                    </ul>
+                </div>
+                <div class="content">
+                    <h2>Ordenes de Trabajo</h2>
+                    <div class="actionsTrabajo">
+                        <h3>Detalles de orden de trabajo</h3>
+                        <div class="actions">
+                            <div class="inputInfo">
+                                <p><b>Cliente</b></p>
+                                <input type="text" placeholder="Seleccionar cliente..." id="seleccionCliente" class="entrada">
+                            </div>
+                            <div class="inputInfo">
+                                <p><b>Responsable</b></p>
+                                <input type="text" placeholder="Nombre del Responsable..." id="nombreResposable" class="entrada">
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <div class="actions">
+                            <div class="inputInfo">
+                                <p><b>Metodo de Pago</b></p>
+                                <input type="text" placeholder="Metodo de Pago..." id="MetodoPago" class="entrada">
+                            </div>
+                            <div class="inputInfo">
+                                <p><b>Estado</b></p>
+                                <select id="estado" name="estado">
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="proceso" selected>En Proceso</option>
+                                    <option value="completado">Completado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <div class="space"></div>
+                    </div>
+                        <div class="finished_products">
+                            <h2>Orden de Trabajo</h2>
+                            <div class="table_finished_products">
+                                <table>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Responsable</th>
+                                        <th>Metodo de Pago</th>
+                                        <th>Estado</th>
+                                        <th>acciones</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Usuario 1</td>
+                                        <td>Responsable 1</td>
+                                        <td>Metodo de Pago 1</td>
+                                        <td>Estado 1</td>
+                                        <td>
+                                            <div class="acciones">
+                                                <button class="editar">Editar</button>
+                                                <button class="eliminar">Eliminar</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Usuario 2</td>
+                                        <td>Responsable 2</td>
+                                        <td>Metodo de Pago 2</td>
+                                        <td>Estado 2</td>
+                                        <td>
+                                            <div class="acciones">
+                                                <button class="editar">Editar</button>
+                                                <button class="eliminar">Eliminar</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="space"></div>
+                                <div class="button-add">
+                                    <button class="agregar">Agregar Categoria</button>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="action-orden">
+                        <div class="button-add">
+                            <button class="cancelarO">Cancelar</button>
+                        </div>
+                        <div class="button-add">
+                            <button class="agregar">Guardar Orden</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

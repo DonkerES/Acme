@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cotizaciones</title> 
+        <link rel="stylesheet" href="css/style-div.css">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    </head>
+
+    <body>
+        <div class="container-main">
+                <div class="topbar">
+                    <div class="sidebarMo">
+                    <button class="sidebarBt"><b>𝄘</b></button>
+                </div>
+                <div class="logo">
+                    <a href="index.html">Comercializadora ACME S.A.S.</a>
+                </div>
+                <div class="button-session">
+                    <a href="index.html" class="cerrar">Cerrar Sesión</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="sidebar">
+                    <ul>
+                        <li><a href="index.html">Panel de Control</a></li>
+                        <li><a href="gestor-de-productos.html">Gestor de Productos</a></li>
+                        <li><a href="gestor-de-clientes.html">Gestor de Clientes</a></li>
+                        <li><a href="gestor-de-proveedores.html">Gestor de Proveedores</a></li>
+                        <li><a href="gestor-de-categorias.html">Gestor de Categorias</a></li>
+                        <li><a href="gestor-de-ordenes.html">Ordenes de Trabajo</a></li>
+                        <li><a href="gestor-de-cotizaciones.html" class="selected">Cotizaciones</a></li>
+                        <li><a href="gestor-de-reportes.html">Reportes</a></li>
+                    </ul>
+                </div>
+                <div class="content">
+                    <h2>Generar Nueva Cotizacion</h2>
+                    
+                    <div class="actionsTrabajo">
+                        <h3>Informacion del Cliente</h3>
+                        <div class="actions">
+                            <div class="inputInfo">
+                                <p><b>Cliente</b></p>
+                                <input type="text" placeholder="Seleccionar cliente..." id="seleccionCliente" class="entrada">
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <div class="actions">
+                            <div class="inputInfo">
+                                <p><b>Fecha de Cotizacion</b></p>
+                                <input type="text" placeholder="Metodo de Pago..." id="MetodoPago" class="entrada">
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <div class="space"></div>
+                    </div>
+                        <div class="finished_products">
+                            <h2>Productos/Servicios Cotizados</h2>
+                            <div class="table_finished_products">
+                                <table>
+                                    <tr>
+                                        <th>Producto/Servicio</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Total</th>
+                                        <th>acciones</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Producto 1</td>
+                                        <td>1</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td class="acciones">
+                                            <div class="acciones">
+                                                <button class="eliminar">Eliminar</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Producto 2</td>
+                                        <td>1</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td class="acciones">
+                                            <div class="acciones">
+                                                <button class="eliminar">Eliminar</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="fila-total">
+            <td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td>
+            <td>0.00</td>
+            
+        </tr>
+
+        <tr class="fila-total">
+            <td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td>
+            <td>0.00</td>
+            
+        </tr>
+
+        <tr class="fila-total">
+            <td colspan="3" class="texto-derecha"><strong>Total:</strong></td>
+            <td><strong>0.00</strong></td>
+            
+        </tr>
+                                </table>
+                                <div class="space"></div>
+                                <div class="button-add">
+                                    <button class="agregar">Añadir Producto/Servicio</button>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="action-orden">
+                        <div class="button-add">
+                            <button class="cancelarO">Cancelar</button>
+                        </div>
+                        <div class="button-add">
+                            <button class="agregar">Generar Cotizacion</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
