@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Reportes</title>
+    <link rel="stylesheet" href="css/style-div.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+
+<body>
+    <div class="container-main">
+        <div class="topbar">
+                <div class="sidebarMo">
+                <button class="sidebarBt"><b>𝄘</b></button>
+            </div>
+            <div class="logo">
+                <a href="index.html">Comercializadora ACME S.A.S.</a>
+            </div>
+            <div class="button-session">
+                <a href="index.html" class="cerrar">Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="dashboard.html">Panel de Control</a></li>
+                    <li><a href="gestor-de-productos.html">Gestor de Productos</a></li>
+                    <li><a href="gestor-de-clientes.html">Gestor de Clientes</a></li>
+                    <li><a href="gestor-de-proveedores.html">Gestor de Proveedores</a></li>
+                    <li><a href="gestor-de-categorias.html">Gestor de Categorias</a></li>
+                    <li><a href="gestor-de-ordenes.html">Ordenes de Trabajo</a></li>
+                    <li><a href="gestor-de-cotizaciones.html">Cotizaciones</a></li>
+                    <li><a href="gestor-de-reportes.html" class="selected">Reportes</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <h2>Generar Reportes</h2>
+
+                <div class="actionsTrabajo">
+                    <h3>Filtros de Reporte</h3>
+                    <div class="actions">
+                        <div class="inputInfo">
+                            <p><b>Tipo de Reporte</b></p>
+                            <select id="estado" name="estado">
+                                <option value="pendiente">Reporte de Inventario</option>
+                            </select>
+                        </div>
+                        <div class="inputInfo">
+                            <p><b>Fecha Inicio</b></p>
+                            <input type="text" placeholder="mm/dd/yyyy" id="nombreResposable" class="entrada-reportes">
+                        </div>
+                        <div class="inputInfo">
+                            <p><b>Fecha Fin</b></p>
+                            <input type="text" placeholder="mm/dd/yyyy" id="nombreResposable" class="entrada-reportes">
+                        </div>
+                    </div>
+
+                    <div class="space"></div>
+                    <div class="space"></div>
+                        <div class="button-add-reportes">
+                            <button class="agregar">Generar Reporte</button>
+                        </div>
+                    <div class="space"></div>
+
+                </div>
+                <div class="finished_products">
+                    <h2>Orden de Trabajo</h2>
+                    <div class="table_finished_products">
+                        <table>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Operacion</th>
+                                <th>Fecha</th>
+                                <th>acciones</th>
+                            </tr>
+                            <tr>
+                                <td>Producto A</td>
+                                <td>1</td>
+                                <td>Entrada</td>
+                                <td>mm/dd/yyyy</td>
+                                <td class="acciones">
+                                    <div class="acciones">
+                                        <button class="ver">Ver</button>
+                                        <button class="editar">Editar</button>
+                                        <button class="eliminar">Eliminar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Producto B</td>
+                                <td>1</td>
+                                <td>salida</td>
+                                <td>mm/dd/yyyy</td>
+                                <td class="acciones">
+                                    <div class="acciones">
+                                        <button class="ver">Ver</button>
+                                        <button class="editar">Editar</button>
+                                        <button class="eliminar">Eliminar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Producto C</td>
+                                <td>1</td>
+                                <td>Entrada</td>
+                                <td>mm/dd/yyyy</td>
+                                <td class="acciones">
+                                    <div class="acciones">
+                                        <button class="ver">Ver</button>
+                                        <button class="editar">Editar</button>
+                                        <button class="eliminar">Eliminar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="space"></div>
+
+                    </div>
+                </div>
+                <div class="action-orden">
+                    <div class="button-add">
+                        <button class="cancelarO">Cancelar</button>
+                    </div>
+                    <div class="button-add">
+                        <button class="agregar">Guardar Orden</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

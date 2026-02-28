@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Gestor de Proveedores</title>
+    <link rel="stylesheet" href="css/style-div.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+
+<body>
+    <div class="container-main">
+        <div class="topbar">
+            <div class="sidebarMo">
+                <button class="sidebarBt"><b>𝄘</b></button>
+            </div>
+            <div class="logo">
+                <a href="index.html">Comercializadora ACME S.A.S.</a>
+            </div>
+            <div class="button-session">
+                <a href="index.html" class="cerrar">Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="dashboard.html">Panel de Control</a></li>
+                    <li><a href="gestor-de-productos.html">Gestor de Productos</a></li>
+                    <li><a href="gestor-de-clientes.html">Gestor de Clientes</a></li>
+                    <li><a href="gestor-de-proveedores.html" class="selected">Gestor de Proveedores</a></li>
+                    <li><a href="gestor-de-categorias.html">Gestor de Categorias</a></li>
+                    <li><a href="gestor-de-ordenes.html">Ordenes de Trabajo</a></li>
+                    <li><a href="gestor-de-cotizaciones.html">Cotizaciones</a></li>
+                    <li><a href="gestor-de-reportes.html">Reportes</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <h2>Gestor de Proveedores</h2>
+                <div class="actions">
+                    <div class="button-add">
+                        <button class="agregar">Agregar Proveedor</button>
+                    </div>
+                    <div class="to-search">
+                        <input type="text" placeholder="Buscar proveedor...">
+
+                    </div>
+                </div>
+                <div class="table-products">
+                    <table>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Direccion</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>Alberto</td>
+                            <td>Muñoz</td>
+                            <td>Calle 5ta-Cra 9na</td>
+                            <td>albermu@gmail.com</td>
+                            <td>310427095</td>
+                            <td><div class="acciones"><button class="editar">Editar</button><button class="eliminar">Eliminar</button><button class="ver">Ver</button></div></td>
+                        </tr>
+                        <tr>
+                            <td>Cristian</td>
+                            <td>Salas</td>
+                            <td>Calla 30-Cra 10</td>
+                            <td>crisa@gmail.com</td>
+                            <td>1057157521</td>
+                            <td><div class="acciones"><button class="editar">Editar</button><button class="eliminar">Eliminar</button><button class="ver">Ver</button></div></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
