@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Cotizaciones</title> 
+        <title>Cotizaciones</title>
         <link rel="stylesheet" href="css/style-div.css">
-        <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     </head>
 
     <body>
         <div class="container-main">
-                <div class="topbar">
-                    <div class="sidebarMo">
+            <div class="topbar">
+                <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
                 </div>
                 <div class="logo">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="content">
                     <h2>Generar Nueva Cotizacion</h2>
-                    
+
                     <div class="actionsTrabajo">
                         <h3>Informacion del Cliente</h3>
                         <div class="actions">
@@ -47,81 +47,96 @@
                         <div class="actions">
                             <div class="inputInfo">
                                 <p><b>Fecha de Cotizacion</b></p>
-                                <input type="text" placeholder="Metodo de Pago..." id="MetodoPago" class="entrada">
+                                <input type="text" placeholder="mm/dd/yyyy" id="fechaCotizacion" class="entrada">
                             </div>
                         </div>
                         <div class="space"></div>
                         <div class="space"></div>
                     </div>
-                        <div class="finished_products">
-                            <h2>Productos/Servicios Cotizados</h2>
-                            <div class="table_finished_products">
-                                <table>
+
+                    <div class="finished_products">
+                        <h2>Productos/Servicios Cotizados</h2>
+                        <div class="table_finished_products">
+                            <table>
+                                <thead>
                                     <tr>
                                         <th>Producto/Servicio</th>
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
                                         <th>Total</th>
-                                        <th>acciones</th>
+                                        <th>Acciones</th>
                                     </tr>
-                                    <tr>
-                                        <td>Producto 1</td>
-                                        <td>1</td>
-                                        <td>0.00</td>
-                                        <td>0.00</td>
-                                        <td class="acciones">
-                                            <div class="acciones">
-                                                <button class="eliminar">Eliminar</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Producto 2</td>
-                                        <td>1</td>
-                                        <td>0.00</td>
-                                        <td>0.00</td>
-                                        <td class="acciones">
-                                            <div class="acciones">
-                                                <button class="eliminar">Eliminar</button>
-                                            </div>
-                                        </td>
+                                </thead>
+                                <tbody id="cuerpoTabla"></tbody>
+                                <tfoot>
+                                    <tr class="fila-total">
+                                        <td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td>
+                                        <td id="subtotal">0.00</td>
+                                        <td></td>
                                     </tr>
                                     <tr class="fila-total">
-            <td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td>
-            <td>0.00</td>
-            
-        </tr>
+                                        <td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td>
+                                        <td id="iva">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="fila-total">
+                                        <td colspan="3" class="texto-derecha"><strong>Total:</strong></td>
+                                        <td id="total"><strong>0.00</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="space"></div>
+                            <div class="button-add" id="openModal">
+                                <button class="agregar">Añadir Producto/Servicio</button>
+                                <div id="myModal" class="modal2">
+                                <div class="modal-content">
+                                    <span id="closeModal" class="close">&times;</span>
+                                    <h2>Añadir Producto/Servicio</h2>
+                                    <form id="cotizacionForm">
+                                        <label for="producto">Producto/Servicio</label>
+                                        <input type="text" id="producto" name="producto" required><br><br>
 
-        <tr class="fila-total">
-            <td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td>
-            <td>0.00</td>
-            
-        </tr>
+                                        <label for="cantidad">Cantidad</label>
+                                        <input type="number" id="cantidad" name="cantidad" min="1" required><br><br>
 
-        <tr class="fila-total">
-            <td colspan="3" class="texto-derecha"><strong>Total:</strong></td>
-            <td><strong>0.00</strong></td>
-            
-        </tr>
-                                </table>
-                                <div class="space"></div>
-                                <div class="button-add">
-                                    <button class="agregar">Añadir Producto/Servicio</button>
+                                        <label for="precioUnitario">Precio Unitario</label>
+                                        <input type="number" id="precioUnitario" name="precioUnitario" step="0.01" min="0" required><br><br>
+
+                                        <button type="submit" id="btnSubmit">Añadir</button>
+                                    </form>
+                                </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
                     <div class="action-orden">
                         <div class="button-add">
-                            <button class="cancelarO">Cancelar</button>
+                            <button class="cancelarO" onclick="cancelar()">Cancelar</button>
                         </div>
                         <div class="button-add">
-                            <button class="agregar">Generar Cotizacion</button>
+                            <button class="agregar" onclick="generarCotizacion()">Generar Cotizacion</button>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
-    </body>
 
+        <!-- Modal Resumen Cotizacion -->
+        <div id="myModalResumen" class="modal2">
+            <div class="modal-content" id="contenidoResumen">
+                <div class="spanModal">
+                    <span class="close" ng-click="closeModal()">&times;</span>
+                </div>
+                <h2>Cotizacion Generada</h2>
+                <div id="resumenCotizacion"></div>
+                <br>
+                <button onclick="window.print()" style="width:40%;padding:12px;background-color:#007BFF;color:white;border:none;border-radius:6px;font-size:16px;cursor:pointer;">Imprimir</button>
+            </div>
+        </div>
+        <script src="js/cotizaciones.js"></script>
+        <script src="js/sidebar.js"></script>
+    </body>
 </html>

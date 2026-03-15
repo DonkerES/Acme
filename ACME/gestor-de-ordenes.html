@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="OrdenApp">
     <head>
         <title>Gestor de Productos</title> 
         <link rel="stylesheet" href="css/style-div.css">
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!-- AngularJS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <!-- Local Storage Module -->
+        <script src="js/angular-local-storage.min.js"></script>
+
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="OrdenController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -34,90 +39,85 @@
                 </div>
                 <div class="content">
                     <h2>Ordenes de Trabajo</h2>
-                    <div class="actionsTrabajo">
-                        <h3>Detalles de orden de trabajo</h3>
+                    <div ng-controller="OrdenController" class="actionsTrabajo">
+                    <h3>Detalles de Orden de Trabajo</h3>
+                    <form ng-submit="saveOrden()">
                         <div class="actions">
                             <div class="inputInfo">
                                 <p><b>Cliente</b></p>
-                                <input type="text" placeholder="Seleccionar cliente..." id="seleccionCliente" class="entrada">
+                                <input type="text" placeholder="Seleccionar cliente..." ng-model="newOrden.usuario" class="entrada" required>
                             </div>
                             <div class="inputInfo">
                                 <p><b>Responsable</b></p>
-                                <input type="text" placeholder="Nombre del Responsable..." id="nombreResposable" class="entrada">
+                                <input type="text" placeholder="Nombre del Responsable..." ng-model="newOrden.responsable" class="entrada" required>
                             </div>
                         </div>
-                        <div class="space"></div>
+
                         <div class="actions">
                             <div class="inputInfo">
-                                <p><b>Metodo de Pago</b></p>
-                                <input type="text" placeholder="Metodo de Pago..." id="MetodoPago" class="entrada">
+                                <p><b>Método de Pago</b></p>
+                                <input type="text" placeholder="Método de Pago..." ng-model="newOrden.metodoPago" class="entrada" required>
                             </div>
                             <div class="inputInfo">
                                 <p><b>Estado</b></p>
-                                <select id="estado" name="estado">
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="proceso" selected>En Proceso</option>
-                                    <option value="completado">Completado</option>
+                                <select ng-model="newOrden.estado" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="proceso">En Proceso</option>
+                                <option value="completado">Completado</option>
                                 </select>
                             </div>
                         </div>
                         <div class="space"></div>
-                        <div class="space"></div>
-                    </div>
+                        <div class="actions">
+                            <div class="button-add">
+                                <button type="submit" class="agregar">
+                                    {{ editingIndex === null ? "Agregar Orden" : "Actualizar Orden" }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                         <div class="finished_products">
                             <h2>Orden de Trabajo</h2>
                             <div class="table_finished_products">
-                                <table>
-                                    <tr>
+                                <table class="ordenes">
+                                    <thead>
+                                        <tr>
                                         <th>Usuario</th>
                                         <th>Responsable</th>
-                                        <th>Metodo de Pago</th>
+                                        <th>Método de Pago</th>
                                         <th>Estado</th>
-                                        <th>acciones</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Usuario 1</td>
-                                        <td>Responsable 1</td>
-                                        <td>Metodo de Pago 1</td>
-                                        <td>Estado 1</td>
+                                        <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="orden in ordenes track by $index">
+                                        <td>{{ orden.usuario }}</td>
+                                        <td>{{ orden.responsable }}</td>
+                                        <td>{{ orden.metodoPago }}</td>
+                                        <td>{{ orden.estado }}</td>
                                         <td>
-                                            <div class="acciones">
-                                                <button class="editar">Editar</button>
-                                                <button class="eliminar">Eliminar</button>
-                                            </div>
+                                            <button class="editar" ng-click="editOrden($index)">Editar</button>
+                                            <button class="eliminar" ng-click="deleteOrden($index)">Eliminar</button>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Usuario 2</td>
-                                        <td>Responsable 2</td>
-                                        <td>Metodo de Pago 2</td>
-                                        <td>Estado 2</td>
-                                        <td>
-                                            <div class="acciones">
-                                                <button class="editar">Editar</button>
-                                                <button class="eliminar">Eliminar</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        </tr>
+                                    </tbody>
                                 </table>
-                                <div class="space"></div>
-                                <div class="button-add">
-                                    <button class="agregar">Agregar Categoria</button>
-                                </div>
                             </div>
                         </div>
                     <div class="action-orden">
                         <div class="button-add">
-                            <button class="cancelarO">Cancelar</button>
+                            <button class="cancelarO" ng-click="cancelarOrdenes($index)">Cancelar</button>
                         </div>
                         <div class="button-add">
-                            <button class="agregar">Guardar Orden</button>
+                            <button class="agregar" ng-click="generarRecibo()">Guardar Orden</button>
                         </div>
                     </div>
                     
                 </div>
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="js/controller3.js"></script>
+        <script src="js/sidebar.js"></script>
     </body>
-
 </html>

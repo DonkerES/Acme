@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="DashboardApp">
     <head>
         <title>Panel De Control</title> 
         <link rel="stylesheet" href="css/style-div.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+        <!--Angular-->
+        <!-- AngularJS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <!-- Local Storage Module -->
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
 <body>
@@ -32,68 +37,63 @@
                     <li><a href="gestor-de-reportes.html">Reportes</a></li>
                 </ul>
             </div>
-            <div class="content">
+            <div class="content" ng-controller="DashboardController">
                 <h2>Panel de Control</h2>
                 <div class="statistics">
                     <div class="reports">
-                        <p>Productos Registrados</p>
-                        <p class="special"><b>200</b></p>
-                        <p>toltal productos en el sistema</p>
-                        <p class="special"><b>200</b></p>
+                        <h3>Productos Registrados</h3>
+                        <p class="special">{{ totalProductos }}</p>
+                        <h3>Total productos en el sistema</h3>
+                        <p class="special">{{ totalProductos }}</p>
                     </div>
                     <div class="reports">
-                        <p>Clientes Registrados</p>
-                        <p class="special"><b>34</b></p>
-                        <p>toltal clientes activos</p>
-                        <p class="special"><b>21</b></p>
+                        <h3>Clientes Registrados</h3>
+                        <p class="special">{{ totalClientes }}</p>
+                        <h3>Total clientes activos</h3>
+                        <p class="special">{{ clientesActivos }}</p>
                     </div>
                     <div class="reports">
-                        <p>Proveedores Registrados</p>
-                        <p class="special"><b>45</b></p>
-                        <p>toltal proveedores activos</p>
-                        <p class="special"><b>23</b></p>
+                        <h3>Proveedores Registrados</h3>
+                        <p class="special">{{ totalProveedores }}</p>
+                        <h3>Total proveedores activos</h3>
+                        <p class="special">{{ proveedoresActivos }}</p>
                     </div>
                     <div class="reports">
-                        <p>Categorías Registradas</p>
-                        <p class="special"><b>16</b></p>
-                        <p>toltal categorías activas</p>
-                        <p class="special"><b>11</b></p>
+                        <h3>Categorías Registradas</h3>
+                        <p class="special">{{ totalCategorias }}</p>
+                        <h3>Total categorías activas</h3>
+                        <p class="special">{{ categoriasActivas }}</p>
                     </div>
                 </div>
                 <div class="finished_products">
-                    <h2>Productos a Punto de Terminar</h2>
+                    <h2>Productos a Punto de Terminarse</h2>
                     <div class="table_finished_products">
-                        <table>
+                        <table class="critical-products">
+                            <thead>
                             <tr>
-                                <th>Codigo</th>
+                                <th>Código</th>
                                 <th>Producto</th>
-                                <th>Categoria</th>
+                                <th>Categoría</th>
                                 <th>Cantidad disponible</th>
-                                <th>Cantidad minima</th>
                             </tr>
-                            <tr>
-                                <td>001</td>
-                                <td>Producto A</td>
-                                <td>Categoria 1</td>
-                                <td>10</td>
-                                <td>15</td>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="p in productosCriticos">
+                                <td>{{ p.codigo }}</td>
+                                <td>{{ p.nombre }}</td>
+                                <td>{{ p.categoria }}</td>
+                                <td>{{ p.cantidad }}</td>
                             </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Producto B</td>
-                                <td>Categoria 2</td>
-                                <td>5</td>
-                                <td>10</td>
-                            </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/controllerDash.js"></script>
+    <script src="js/sidebar.js"></script>
 </body>
-
 
 
 </html>

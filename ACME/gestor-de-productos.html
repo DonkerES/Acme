@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="ProductApp">
     <head>
         <title>Gestor de Productos</title> 
         <link rel="stylesheet" href="css/style-div.css">
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <!-- Local Storage Module -->
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="ProductController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -35,51 +38,84 @@
                 <div class="content">
                     <h2>Gestor de Productos</h2>
                     <div class="actions">
-                        <div class="button-add">
+                        <div class="button-add" id="openModal" ng-click="openProductosModal()">
                             <button class="agregar">Agregar Producto</button>
                         </div>
+                        <div class="modal" ng-show="showModalProductos">
+                            <div class="modal-content">
+                                <div class="spanModal">
+                                    <span class="close" ng-click="closeModal()">&times;</span>
+                                </div>
+                                <h2>{{ editingIndex === null ? "Agregar Producto" : "Editar Producto" }}</h2>
+                                <form ng-submit="saveProduct()">
+                                <label for="codigo">Código</label>
+                                <input type="text" id="codigo" ng-model="newProduct.codigo" required><br><br>
+
+                                <label for="nombre">Nombre</label>
+                                <input type="text" id="nombre" ng-model="newProduct.nombre" required><br><br>
+
+                                <label for="categoria">Categoría</label>
+                                <input type="text" id="categoria" ng-model="newProduct.categoria" required><br><br>
+
+                                <label for="ubicacion">Ubicación</label>
+                                <input type="text" id="ubicacion" ng-model="newProduct.ubicacion"><br><br>
+
+                                <label for="precioEntrada">Precio de Entrada</label>
+                                <input type="number" id="precioEntrada" ng-model="newProduct.precioEntrada" step="0.01" required><br><br>
+
+                                <label for="precioSalida">Precio de Salida</label>
+                                <input type="number" id="precioSalida" ng-model="newProduct.precioSalida" step="0.01" required><br><br>
+
+                                <label for="cantidad">Cantidad Disponible</label>
+                                <input type="number" id="cantidad" ng-model="newProduct.cantidad" required><br><br>
+
+                                <button type="submit">
+                                    {{ editingIndex === null ? "Guardar Producto" : "Actualizar Producto" }}
+                                </button>
+                                </form>
+                            </div>
+                        </div>
                         <div class="to-search">
-                            <input type="text" placeholder="Buscar producto...">
-                            
+                            <input type="text" ng-model="searchText" placeholder="Buscar producto">
                         </div>
                     </div>
                     <div class="table-products">
-                        <table>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Categoría</th>
-                                <th>Ubicacion</th>
-                                <th>Precio De Entrada</th>
-                                <th>Precio De Salida</th>
-                                <th>Cantidad Disponible</th>
-                                <th>Acciones</th>
-                            </tr>
-                            <tr>
-                                <td>001</td>
-                                <td>Producto 1</td>
-                                <td>Categoría A</td>
-                                <td>Almacén 1</td>
-                                <td>$10.00</td>
-                                <td>$15.00</td>
-                                <td>100</td>
-                                <td><div class="acciones"><button class="editar">Editar</button><button class="eliminar">Eliminar</button><button class="ver">Ver</button></div></td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Producto 2</td>
-                                <td>Categoría B</td>
-                                <td>Almacén 2</td>
-                                <td>$20.00</td>
-                                <td>$30.00</td>
-                                <td>50</td>
-                                <td><div class="acciones"><button class="editar">Editar</button><button class="eliminar">Eliminar</button><button class="ver">Ver</button></div></td>
-                            </tr>  
+                        <table class="productos" id="tablaProductos">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Ubicación</th>
+                                    <th>Precio de Entrada</th>
+                                    <th>Precio de Salida</th>
+                                    <th>Cantidad Disponible</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="p in products track by $index"
+                                    ng-show="!searchText || p.nombre.toLowerCase().includes(searchText.toLowerCase())">
+                                    <td>{{ p.codigo }}</td>
+                                    <td>{{ p.nombre }}</td>
+                                    <td>{{ p.categoria }}</td>
+                                    <td>{{ p.ubicacion }}</td>
+                                    <td>{{ p.precioEntrada | currency }}</td>
+                                    <td>{{ p.precioSalida | currency }}</td>
+                                    <td>{{ p.cantidad }}</td>
+                                    <td>
+                                        <button ng-click="editProduct($index)" class="editar">Editar</button>
+                                        <button ng-click="deleteProduct($index)" class="eliminar">Eliminar</button>
+                                        <button ng-click="viewProduct($index)" class="ver">Ver</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="js/controller2.js"></script>
+        <script src="js/sidebar.js"></script>
     </body>
-
 </html>

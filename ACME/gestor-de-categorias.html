@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="CategoryApp">
     <head>
         <title>Gestor de Productos</title> 
         <link rel="stylesheet" href="css/style-div.css">
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!-- AngularJS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <!-- Local Storage Module -->
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="CategoryController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -35,49 +39,68 @@
                 <div class="content">
                     <h2>Gestor de Categorias</h2>
                     <div class="actions">
-                        <div class="button-add">
-                            <button class="agregar">Agregar Categoria</button>
+                        <div class="button-add" id="openCategorias" ng-click="openCategoriasModal()">
+                            <button class="agregar" >Agregar Categoria</button>
+                        </div>
+                        <div class="modal" ng-show="showModal">
+                            <div class="modal-content">
+                                <div class="spanModal">
+                                    <span class="close" ng-click="closeModal()">&times;</span>
+                                </div>
+                                <h2>{{ editingIndex === null ? "Agregar Categoría" : "Editar Categoría" }}</h2>
+
+                                <form ng-submit="editingIndex === null ? addCategory() : updateCategory()">
+                                <label for="codigoCategoria">Código</label>
+                                <input type="text" id="codigoCategoria" ng-model="newCategory.id" required><br><br>
+
+                                <label for="nombreCategoria">Nombre</label>
+                                <input type="text" id="nombreCategoria" ng-model="newCategory.nombre" required><br><br>
+
+                                <label for="descripcionCategoria">Descripción</label>
+                                <input type="text" id="descripcionCategoria" ng-model="newCategory.descripcion" required><br><br>
+
+                                <button type="submit">
+                                    {{ editingIndex === null ? "Guardar Categoría" : "Actualizar Categoría" }}
+                                </button>
+                                </form>
+                            </div>
                         </div>
                         <div class="to-search">
-                            <input type="text" placeholder="Buscar categoria...">
-                            
+                            <input type="text" ng-model="searchCategoria" placeholder="Buscar categoría...">
                         </div>
                     </div>
                     <div class="table-categories">
-                        <table>
+                        <table id="tablaCategorias">
+                            <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Descripcion</th>
-                                <th>Acciones</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
                             </tr>
-                            <tr>
-                                <td>001</td>
-                                <td>Categoria 1</td>
-                                <td>Descripcion de la categoria 1</td>
-                                <td >
-                                    <div class="acciones">
-                                        <button class="editar">Editar</button>
-                                        <button class="eliminar">Eliminar</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Categoria 2</td>
-                                <td>Descripcion de la categoria 2</td>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="c in categories track by $index"
+                                ng-show="!searchCategoria || c.nombre.toLowerCase().includes(searchCategoria.toLowerCase())">
+                                <td>{{ c.id }}</td>
+                                <td>{{ c.nombre }}</td>
+                                <td>{{ c.descripcion }}</td>
                                 <td>
-                                    <div class="acciones">
-                                        <button class="editar">Editar</button>
-                                        <button class="eliminar">Eliminar</button>
-                                    </div>
+                                <div class="acciones">
+                                    <button class="editar" ng-click="editCategory($index)">Editar</button>
+                                    <button class="eliminar" ng-click="deleteCategory($index)">Eliminar</button>
+                                </div>
                                 </td>
                             </tr>
+                        </tbody>
+
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="js/controller.js"></script>
+        <script src="js/sidebar.js"></script>
     </body>
 
 </html>
