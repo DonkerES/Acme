@@ -3,8 +3,8 @@ angular.module("DashboardApp", ["LocalStorageModule"])
 .controller("DashboardController", function($scope, localStorageService) {
     //datos desde localStorage
     $scope.products    = localStorageService.get("products")    || [];
-    $scope.clientes    = JSON.parse(localStorage.getItem("listaClientes")) || [];
-    $scope.proveedores = JSON.parse(localStorage.getItem("listaProveedores")) || [];
+    $scope.clientes    = localStorageService.get("listaClientes")  || [];
+    $scope.proveedores = localStorageService.get("listaClientes")  || [];
     $scope.categorias  = localStorageService.get("categories")  || [];
 
     // totales

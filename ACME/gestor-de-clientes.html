@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="ClienteApp">
     <head>
-        <title>Gestor de Clientes</title> 
+        <title>Gestor de Clientes</title>
         <link rel="stylesheet" href="css/style-div.css">
-        <meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="ClienteController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -35,35 +37,39 @@
                 <div class="content">
                     <h2>Gestor de Clientes</h2>
                     <div class="actions">
-                        <div class="button-add" id="openModal">
+                        <div class="button-add" ng-click="openClientesModal()">
                             <button class="agregar">Agregar Cliente</button>
-                            <div id="myModal" class="modal2">
+                        </div>
+                        <div class="modal" ng-show="showModal">
                             <div class="modal-content">
-                                <span id="closeModal" class="close">&times;</span>
-                                <h2 id="modalTitulo">Agregar Cliente</h2>
-                                <form id="clienteForm">
-                                    <label for="nombre" >Nombre</label>
-                                    <input type="text" id="nombre" name="nombre" required><br><br>
+                                <div class="spanModal">
+                                    <span class="close" ng-click="closeModal()">&times;</span>
+                                </div>
+                                <h2>{{ editingIndex === null ? "Agregar Cliente" : "Editar Cliente" }}</h2>
+                                <form ng-submit="saveCliente()">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" id="nombre" ng-model="newCliente.nombre" required><br><br>
 
                                     <label for="apellido">Apellido</label>
-                                    <input type="text" id="apellido" name="apellido" required><br><br>
+                                    <input type="text" id="apellido" ng-model="newCliente.apellido" required><br><br>
 
                                     <label for="direccion">Dirección</label>
-                                    <input type="text" id="direccion" name="direccion" required><br><br>
+                                    <input type="text" id="direccion" ng-model="newCliente.direccion" required><br><br>
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" required><br><br>
+                                    <input type="email" id="email" ng-model="newCliente.email" required><br><br>
 
                                     <label for="telefono">Teléfono</label>
-                                    <input type="text" id="telefono" name="telefono" required><br><br>
+                                    <input type="text" id="telefono" ng-model="newCliente.telefono" required><br><br>
 
-                                    <button type="submit" id="btnSubmit">Guardar Cliente</button>
+                                    <button type="submit">
+                                        {{ editingIndex === null ? "Guardar Cliente" : "Actualizar Cliente" }}
+                                    </button>
                                 </form>
-                            </div>
                             </div>
                         </div>
                         <div class="to-search">
-                            <input type="text" placeholder="Buscar cliente...">
+                            <input type="text" ng-model="searchText" placeholder="Buscar cliente...">
                         </div>
                     </div>
                     <div class="table-products">
@@ -78,7 +84,21 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="cuerpoTabla"></tbody>
+                            <tbody>
+                                <tr ng-repeat="c in clientes track by $index"
+                                    ng-show="!searchText || c.nombre.toLowerCase().includes(searchText.toLowerCase()) || c.apellido.toLowerCase().includes(searchText.toLowerCase())">
+                                    <td>{{ c.nombre }}</td>
+                                    <td>{{ c.apellido }}</td>
+                                    <td>{{ c.direccion }}</td>
+                                    <td>{{ c.email }}</td>
+                                    <td>{{ c.telefono }}</td>
+                                    <td>
+                                        <button ng-click="editCliente($index)" class="editar">Editar</button>
+                                        <button ng-click="deleteCliente($index)" class="eliminar">Eliminar</button>
+                                        <button ng-click="viewCliente($index)" class="ver">Ver</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

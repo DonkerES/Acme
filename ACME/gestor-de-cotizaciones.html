@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="CotizacionApp">
     <head>
         <title>Cotizaciones</title>
         <link rel="stylesheet" href="css/style-div.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="CotizacionController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -34,106 +36,143 @@
                 </div>
                 <div class="content">
                     <h2>Generar Nueva Cotizacion</h2>
-
                     <div class="actionsTrabajo">
                         <h3>Informacion del Cliente</h3>
                         <div class="actions">
                             <div class="inputInfo">
                                 <p><b>Cliente</b></p>
-                                <input type="text" placeholder="Seleccionar cliente..." id="seleccionCliente" class="entrada">
+                                <input type="text" placeholder="Seleccionar cliente..." ng-model="newCotizacion.cliente" class="entrada" required>
                             </div>
                         </div>
-                        <div class="space"></div>
                         <div class="actions">
                             <div class="inputInfo">
                                 <p><b>Fecha de Cotizacion</b></p>
-                                <input type="text" placeholder="mm/dd/yyyy" id="fechaCotizacion" class="entrada">
+                                <input type="text" placeholder="mm/dd/yyyy" ng-model="newCotizacion.fecha" class="entrada" required>
                             </div>
                         </div>
                         <div class="space"></div>
-                        <div class="space"></div>
                     </div>
+                        <div class="finished_products">
+                            
+                            <h2>Productos/Servicios Cotizados</h2>
+                            <div class="table_finished_products">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Producto/Servicio</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Total</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="p in productos track by $index">
+                                            <td>{{ p.producto }}</td>
+                                            <td>{{ p.cantidad }}</td>
+                                            <td>{{ p.precioUnitario | currency }}</td>
+                                            <td>{{ p.cantidad * p.precioUnitario | currency }}</td>
+                                            <td>
+                                                <div class="acciones">
+                                                    <button class="eliminar" ng-click="eliminarProducto($index)">Eliminar</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="fila-total">
+                                            <td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td>
+                                            <td>{{ calcularSubtotal() | currency }}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="fila-total">
+                                            <td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td>
+                                            <td>{{ calcularIva() | currency }}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="fila-total">
+                                            <td colspan="3" class="texto-derecha"><strong>Total:</strong></td>
+                                            <td><strong>{{ calcularTotal() | currency }}</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="space"></div>
+                                <div class="actions">
+                                    <div class="button-add">
+                                        <button class="agregar" ng-click="openModal()">Añadir Producto/Servicio</button>
+                                    </div>
+                                    <div class="modal" ng-show="showModal">
+                                        <div class="modal-content">
+                                            <div class="spanModal">
+                                                <span class="close" ng-click="closeModal()">&times;</span>
+                                            </div>
+                                            <h2>Añadir Producto/Servicio</h2>
+                                            <form ng-submit="addProducto()">
+                                                <label>Producto/Servicio</label>
+                                                <input type="text" ng-model="newProducto.producto" required><br><br>
 
-                    <div class="finished_products">
-                        <h2>Productos/Servicios Cotizados</h2>
-                        <div class="table_finished_products">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Producto/Servicio</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Total</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cuerpoTabla"></tbody>
-                                <tfoot>
-                                    <tr class="fila-total">
-                                        <td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td>
-                                        <td id="subtotal">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="fila-total">
-                                        <td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td>
-                                        <td id="iva">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="fila-total">
-                                        <td colspan="3" class="texto-derecha"><strong>Total:</strong></td>
-                                        <td id="total"><strong>0.00</strong></td>
-                                        <td></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <div class="space"></div>
-                            <div class="button-add" id="openModal">
-                                <button class="agregar">Añadir Producto/Servicio</button>
-                                <div id="myModal" class="modal2">
+                                                <label>Cantidad</label>
+                                                <input type="number" ng-model="newProducto.cantidad" min="1" required><br><br>
+
+                                                <label>Precio Unitario</label>
+                                                <input type="number" ng-model="newProducto.precioUnitario" step="0.01" min="0" required><br><br>
+
+                                                <button type="submit">Añadir</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-orden">
+                            <div class="button-add">
+                                <button class="cancelarO" ng-click="cancelar()">Cancelar</button>
+                            </div>
+                            <div class="button-add">
+                                <button class="agregar" ng-click="generarCotizacion()">Generar Cotizacion</button>
+                            </div>
+                            <div class="modal" ng-show="showResumen">
                                 <div class="modal-content">
-                                    <span id="closeModal" class="close">&times;</span>
-                                    <h2>Añadir Producto/Servicio</h2>
-                                    <form id="cotizacionForm">
-                                        <label for="producto">Producto/Servicio</label>
-                                        <input type="text" id="producto" name="producto" required><br><br>
-
-                                        <label for="cantidad">Cantidad</label>
-                                        <input type="number" id="cantidad" name="cantidad" min="1" required><br><br>
-
-                                        <label for="precioUnitario">Precio Unitario</label>
-                                        <input type="number" id="precioUnitario" name="precioUnitario" step="0.01" min="0" required><br><br>
-
-                                        <button type="submit" id="btnSubmit">Añadir</button>
-                                    </form>
-                                </div>
+                                    <div class="spanModal">
+                                        <span class="close" ng-click="closeResumen()">&times;</span>
+                                    </div>
+                                    <h2>Cotizacion Generada</h2>
+                                    <p><b>Cliente:</b> {{ newCotizacion.cliente }}</p>
+                                    <p><b>Fecha:</b> {{ newCotizacion.fecha }}</p>
+                                    <br>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Producto/Servicio</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio Unitario</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="p in productos track by $index">
+                                                <td>{{ p.producto }}</td>
+                                                <td>{{ p.cantidad }}</td>
+                                                <td>{{ p.precioUnitario | currency }}</td>
+                                                <td>{{ p.cantidad * p.precioUnitario | currency }}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr><td colspan="3" class="texto-derecha"><strong>Subtotal:</strong></td><td>{{ calcularSubtotal() | currency }}</td></tr>
+                                            <tr><td colspan="3" class="texto-derecha"><strong>IVA (19%):</strong></td><td>{{ calcularIva() | currency }}</td></tr>
+                                            <tr><td colspan="3" class="texto-derecha"><strong>Total:</strong></td><td><strong>{{ calcularTotal() | currency }}</strong></td></tr>
+                                        </tfoot>
+                                    </table>
+                                    <br>
+                                    <div class="button-add">
+                                        <button class="agregar" onclick="window.print()">Imprimir</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="action-orden">
-                        <div class="button-add">
-                            <button class="cancelarO" onclick="cancelar()">Cancelar</button>
-                        </div>
-                        <div class="button-add">
-                            <button class="agregar" onclick="generarCotizacion()">Generar Cotizacion</button>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-        </div>
-
-        <!-- Modal Resumen Cotizacion -->
-        <div id="myModalResumen" class="modal2">
-            <div class="modal-content" id="contenidoResumen">
-                <div class="spanModal">
-                    <span class="close" ng-click="closeModal()">&times;</span>
-                </div>
-                <h2>Cotizacion Generada</h2>
-                <div id="resumenCotizacion"></div>
-                <br>
-                <button onclick="window.print()" style="width:40%;padding:12px;background-color:#007BFF;color:white;border:none;border-radius:6px;font-size:16px;cursor:pointer;">Imprimir</button>
             </div>
         </div>
         <script src="js/cotizaciones.js"></script>

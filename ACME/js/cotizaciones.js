@@ -1,168 +1,87 @@
-let productos = [];
+angular.module("CotizacionApp", ["LocalStorageModule"])
 
-// ─── TABLA ────────────────────────────────────────────────────────────────────
+.controller("CotizacionController", function($scope) {
 
-function cargarTabla() {
-    const tbody = document.getElementById("cuerpoTabla");
-    tbody.innerHTML = "";
+    $scope.productos     = [];
+    $scope.newProducto   = {};
+    $scope.newCotizacion = {};
+    $scope.showModal     = false;
+    $scope.showResumen   = false;
 
-    let subtotal = 0;
+    // ─── CALCULOS ─────────────────────────────────────────────────────────────
 
-    productos.forEach(function(p, i) {
-        const total = parseFloat(p.cantidad) * parseFloat(p.precioUnitario);
-        subtotal += total;
+    $scope.calcularSubtotal = function() {
+        var subtotal = 0;
+        $scope.productos.forEach(function(p) {
+            subtotal += parseFloat(p.cantidad || 0) * parseFloat(p.precioUnitario || 0);
+        });
+        return subtotal;
+    };
 
-        const tr = document.createElement("tr");
-        tr.innerHTML =
-            "<td>" + p.producto      + "</td>" +
-            "<td>" + p.cantidad      + "</td>" +
-            "<td>" + parseFloat(p.precioUnitario).toFixed(2) + "</td>" +
-            "<td>" + total.toFixed(2) + "</td>" +
-            '<td><div class="acciones">' +
-                '<button class="eliminar" onclick="eliminarProducto(' + i + ')">Eliminar</button>' +
-            "</div></td>";
-        tbody.appendChild(tr);
-    });
+    $scope.calcularIva = function() {
+        return $scope.calcularSubtotal() * 0.19;
+    };
 
-    const iva   = subtotal * 0.19;
-    const total = subtotal + iva;
+    $scope.calcularTotal = function() {
+        return $scope.calcularSubtotal() + $scope.calcularIva();
+    };
 
-    document.getElementById("subtotal").textContent        = subtotal.toFixed(2);
-    document.getElementById("iva").textContent             = iva.toFixed(2);
-    document.getElementById("total").innerHTML             = "<strong>" + total.toFixed(2) + "</strong>";
-}
+    // ─── MODAL AÑADIR PRODUCTO ────────────────────────────────────────────────
 
-// ─── MODAL AÑADIR PRODUCTO ────────────────────────────────────────────────────
+    $scope.openModal = function() {
+        $scope.newProducto = {};
+        $scope.showModal   = true;
+    };
 
-function abrirModal() {
-    document.getElementById("myModal").style.display = "block";
-}
+    $scope.closeModal = function() {
+        $scope.showModal   = false;
+        $scope.newProducto = {};
+    };
 
-function cerrarModal() {
-    document.getElementById("myModal").style.display = "none";
-}
+    $scope.addProducto = function() {
+        $scope.productos.push(angular.copy($scope.newProducto));
+        $scope.newProducto = {};
+        $scope.showModal   = false;
+    };
 
-document.querySelector(".modal-content").addEventListener("click", function(event) {
-    event.stopPropagation();
+    // ─── ELIMINAR PRODUCTO ────────────────────────────────────────────────────
+
+    $scope.eliminarProducto = function(index) {
+        if (confirm("¿Está seguro de eliminar este producto?")) {
+            $scope.productos.splice(index, 1);
+        }
+    };
+
+    // ─── GENERAR COTIZACION ───────────────────────────────────────────────────
+
+    $scope.generarCotizacion = function() {
+        if (!$scope.newCotizacion.cliente) {
+            alert("Por favor ingresa el nombre del cliente.");
+            return;
+        }
+        if (!$scope.newCotizacion.fecha) {
+            alert("Por favor ingresa la fecha de cotizacion.");
+            return;
+        }
+        if ($scope.productos.length === 0) {
+            alert("Por favor añade al menos un producto o servicio.");
+            return;
+        }
+        $scope.showResumen = true;
+    };
+
+    $scope.closeResumen = function() {
+        $scope.showResumen = false;
+    };
+
+    // ─── CANCELAR ─────────────────────────────────────────────────────────────
+
+    $scope.cancelar = function() {
+        if (confirm("¿Está seguro de cancelar? Se perderán los datos ingresados.")) {
+            $scope.productos     = [];
+            $scope.newCotizacion = {};
+            $scope.showResumen   = false;
+        }
+    };
+
 });
-
-document.getElementById("openModal").onclick = function() {
-    document.getElementById("producto").value       = "";
-    document.getElementById("cantidad").value       = "";
-    document.getElementById("precioUnitario").value = "";
-    abrirModal();
-};
-
-document.getElementById("closeModal").onclick = function() {
-    cerrarModal();
-};
-
-window.onclick = function(event) {
-    if (event.target == document.getElementById("myModal")) {
-        cerrarModal();
-    }
-    if (event.target == document.getElementById("myModalResumen")) {
-        document.getElementById("myModalResumen").style.display = "none";
-    }
-};
-
-document.getElementById("cotizacionForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    productos.push({
-        producto:       document.getElementById("producto").value.trim(),
-        cantidad:       document.getElementById("cantidad").value.trim(),
-        precioUnitario: document.getElementById("precioUnitario").value.trim()
-    });
-
-    cerrarModal();
-    cargarTabla();
-});
-
-// ─── ELIMINAR PRODUCTO ────────────────────────────────────────────────────────
-
-function eliminarProducto(i) {
-    const confirmDelete = confirm("¿Está seguro de eliminar este producto?");
-    if (confirmDelete) {
-        productos.splice(i, 1);
-        cargarTabla();
-    }
-}
-
-// ─── GENERAR COTIZACION ───────────────────────────────────────────────────────
-
-function generarCotizacion() {
-    const cliente = document.getElementById("seleccionCliente").value.trim();
-    const fecha   = document.getElementById("fechaCotizacion").value.trim();
-
-    if (!cliente) {
-        alert("Por favor ingresa el nombre del cliente.");
-        return;
-    }
-    if (!fecha) {
-        alert("Por favor ingresa la fecha de cotizacion.");
-        return;
-    }
-    if (productos.length === 0) {
-        alert("Por favor añade al menos un producto o servicio.");
-        return;
-    }
-
-    let subtotal = 0;
-    let filas = "";
-
-    productos.forEach(function(p) {
-        const total = parseFloat(p.cantidad) * parseFloat(p.precioUnitario);
-        subtotal += total;
-        filas +=
-            "<tr>" +
-                "<td>" + p.producto + "</td>" +
-                "<td>" + p.cantidad + "</td>" +
-                "<td>$" + parseFloat(p.precioUnitario).toFixed(2) + "</td>" +
-                "<td>$" + total.toFixed(2) + "</td>" +
-            "</tr>";
-    });
-
-    const iva   = subtotal * 0.19;
-    const total = subtotal + iva;
-
-    document.getElementById("resumenCotizacion").innerHTML =
-        "<p><b>Cliente:</b> " + cliente + "</p>" +
-        "<p><b>Fecha:</b> "   + fecha   + "</p>" +
-        "<br>" +
-        "<table>" +
-            "<thead><tr>" +
-                "<th>Producto/Servicio</th>" +
-                "<th>Cantidad</th>" +
-                "<th>Precio Unitario</th>" +
-                "<th>Total</th>" +
-            "</tr></thead>" +
-            "<tbody>" + filas + "</tbody>" +
-            "<tfoot>" +
-                "<tr><td colspan='3' style='text-align:right'><strong>Subtotal:</strong></td><td>$" + subtotal.toFixed(2) + "</td></tr>" +
-                "<tr><td colspan='3' style='text-align:right'><strong>IVA (19%):</strong></td><td>$" + iva.toFixed(2)      + "</td></tr>" +
-                "<tr><td colspan='3' style='text-align:right'><strong>Total:</strong></td><td><strong>$" + total.toFixed(2) + "</strong></td></tr>" +
-            "</tfoot>" +
-        "</table>";
-
-    document.getElementById("myModalResumen").style.display = "block";
-}
-
-document.getElementById("closeModalResumen").onclick = function() {
-    document.getElementById("myModalResumen").style.display = "none";
-};
-
-// ─── CANCELAR ─────────────────────────────────────────────────────────────────
-
-function cancelar() {
-    if (confirm("¿Está seguro de cancelar? Se perderán los datos ingresados.")) {
-        productos = [];
-        document.getElementById("seleccionCliente").value = "";
-        document.getElementById("fechaCotizacion").value  = "";
-        cargarTabla();
-    }
-}
-
-// ─── INICIO ───────────────────────────────────────────────────────────────────
-
-cargarTabla();

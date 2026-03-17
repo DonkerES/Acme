@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="ProveedorApp">
     <head>
         <title>Gestor de Proveedores</title>
         <link rel="stylesheet" href="css/style-div.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="js/angular-local-storage.min.js"></script>
     </head>
 
     <body>
-        <div class="container-main">
+        <div class="container-main" ng-controller="ProveedorController">
             <div class="topbar">
                 <div class="sidebarMo">
                     <button class="sidebarBt"><b>𝄘</b></button>
@@ -35,35 +37,39 @@
                 <div class="content">
                     <h2>Gestor de Proveedores</h2>
                     <div class="actions">
-                        <div class="button-add" id="openModal">
+                        <div class="button-add" ng-click="openProveedoresModal()">
                             <button class="agregar">Agregar Proveedor</button>
-                            <div id="myModal" class="modal2">
+                        </div>
+                        <div class="modal" ng-show="showModal">
                             <div class="modal-content">
-                                <span id="closeModal" class="close">&times;</span>
-                                <h2 id="modalTitulo">Agregar Proveedor</h2>
-                                <form id="proveedorForm">
+                                <div class="spanModal">
+                                    <span class="close" ng-click="closeModal()">&times;</span>
+                                </div>
+                                <h2>{{ editingIndex === null ? "Agregar Proveedor" : "Editar Proveedor" }}</h2>
+                                <form ng-submit="saveProveedor()">
                                     <label for="nombre">Nombre</label>
-                                    <input type="text" id="nombre" name="nombre" required><br><br>
+                                    <input type="text" id="nombre" ng-model="newProveedor.nombre" required><br><br>
 
                                     <label for="apellido">Apellido</label>
-                                    <input type="text" id="apellido" name="apellido" required><br><br>
+                                    <input type="text" id="apellido" ng-model="newProveedor.apellido" required><br><br>
 
                                     <label for="direccion">Dirección</label>
-                                    <input type="text" id="direccion" name="direccion" required><br><br>
+                                    <input type="text" id="direccion" ng-model="newProveedor.direccion" required><br><br>
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" required><br><br>
+                                    <input type="email" id="email" ng-model="newProveedor.email" required><br><br>
 
                                     <label for="telefono">Teléfono</label>
-                                    <input type="text" id="telefono" name="telefono" required><br><br>
+                                    <input type="text" id="telefono" ng-model="newProveedor.telefono" required><br><br>
 
-                                    <button type="submit" id="btnSubmit">Guardar Proveedor</button>
+                                    <button type="submit">
+                                        {{ editingIndex === null ? "Guardar Proveedor" : "Actualizar Proveedor" }}
+                                    </button>
                                 </form>
-                            </div>
                             </div>
                         </div>
                         <div class="to-search">
-                            <input type="text" placeholder="Buscar proveedor...">
+                            <input type="text" ng-model="searchText" placeholder="Buscar proveedor...">
                         </div>
                     </div>
                     <div class="table-products">
@@ -78,7 +84,21 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="cuerpoTabla"></tbody>
+                            <tbody>
+                                <tr ng-repeat="p in proveedores track by $index"
+                                    ng-show="!searchText || p.nombre.toLowerCase().includes(searchText.toLowerCase()) || p.apellido.toLowerCase().includes(searchText.toLowerCase())">
+                                    <td>{{ p.nombre }}</td>
+                                    <td>{{ p.apellido }}</td>
+                                    <td>{{ p.direccion }}</td>
+                                    <td>{{ p.email }}</td>
+                                    <td>{{ p.telefono }}</td>
+                                    <td>
+                                        <button ng-click="editProveedor($index)" class="editar">Editar</button>
+                                        <button ng-click="deleteProveedor($index)" class="eliminar">Eliminar</button>
+                                        <button ng-click="viewProveedor($index)" class="ver">Ver</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

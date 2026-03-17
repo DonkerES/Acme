@@ -763,23 +763,15 @@ button.cancelarO:active{
 }
 
 
-#productForm,
-#clienteForm,
-#proveedorForm,
-#reporteForm {
+.modal-content form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#productForm input[type="text"],
-#productForm input[type="number"],
-#clienteForm input[type="text"],
-#clienteForm input[type="email"],
-#proveedorForm input[type="text"],
-#proveedorForm input[type="email"],
-#reporteForm input[type="text"],
-#reporteForm input[type="number"] {
+.modal-content form input[type="text"],
+.modal-content form input[type="number"],
+.modal-content form input[type="email"] {
   width: 70%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -787,10 +779,7 @@ button.cancelarO:active{
   font-size: 14px;
 }
 
-#productForm button[type="submit"],
-#clienteForm button[type="submit"],
-#proveedorForm button[type="submit"],
-#reporteForm button[type="submit"] {
+.modal-content form button[type="submit"] {
   width: 40%;
   padding: 12px;
   margin-top: 15px;
@@ -801,4 +790,8 @@ button.cancelarO:active{
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.modal-content form button[type="submit"]:hover {
+  background-color: #0056b3;
 }
